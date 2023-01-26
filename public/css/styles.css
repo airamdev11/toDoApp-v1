@@ -85,7 +85,7 @@ input[type="text"]:focus {
 }
 
 ::placeholder {
-  color: grey;
+  color: #976de0;
   opacity: 1;
 }
 
