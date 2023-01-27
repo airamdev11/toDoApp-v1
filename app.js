@@ -5,6 +5,17 @@ const bodyParser = require("body-parser");
 
 const app = express();
 
+//Boilerplate para firebase-admin
+var admin = require("firebase-admin");
+
+var serviceAccount = require("path/to/serviceAccountKey.json");
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://todoapp-v1-fe364-default-rtdb.firebaseio.com"
+});
+
+
 var items = [];
 var workItems = [];
 
