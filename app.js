@@ -15,7 +15,7 @@ app.use(express.static("public"))
 
 app.get("/", function (req, res) {
     var today = new Date();
-    var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', timeZone: 'America/Monterrey'};
     var day = today.toLocaleDateString("es-MX", options);
 
     res.render('list', { listTitle: day, elements: items });
