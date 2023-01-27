@@ -8,13 +8,14 @@ const app = express();
 //Boilerplate para firebase-admin
 var admin = require("firebase-admin");
 
-var serviceAccount = require("path/to/serviceAccountKey.json");
+var passwords = require("./cert.json");
 
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
+  credential: admin.credential.cert(passwords),
   databaseURL: "https://todoapp-v1-fe364-default-rtdb.firebaseio.com"
 });
 
+const db = admin.firestore();
 
 var items = [];
 var workItems = [];
@@ -48,10 +49,23 @@ app.post("/", function (req, res) {
         items.push(element);
         res.redirect("/");
     }
-
-    
-
 });
+
+app.get("/notes", (req,res)=>{
+    db.collection("notes").get()
+    .then((queryDocuments)=>{
+        console.log(queryDocuments);
+        const notesArray = [];
+        const data = queryDocuments.forEach((each)=>{
+            const data = each.data();
+            notesArray.push(data);
+        });
+        res.send(notesArray);
+    })
+    .catch((error)=>{
+        console.log("error: ", error);
+    })
+})
 
 app.listen(3000, function () {
     console.log("Server started on port 3000");
