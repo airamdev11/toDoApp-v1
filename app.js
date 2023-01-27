@@ -34,13 +34,18 @@ app.get("/", function (req, res) {
 
 
     const notesArray = [];
-     db.collection("notes").get().then((documents)=>{
-         documents.forEach((document) => {
+    db.collection("notes").get().then((documents) => {
+        documents.forEach((document) => {
+            if (document.data().isWork === false) {
+                const noteObject = {
+                    noteId: document.data().id,
+                    noteDescription: document.data().noteDescription
+                }
 
-            const note = document.data().noteDescription;
-            notesArray.push(note);
+                notesArray.push(noteObject);
+            }
         });
-        
+
         res.render('list', { listTitle: capitalizeFirstLetter(day), elements: notesArray });
     });
 }
@@ -49,17 +54,22 @@ app.get("/", function (req, res) {
 
 app.get("/work", function (req, res) {
     const workNotesArray = [];
-     db.collection("notes").get().then((documents)=>{
-         documents.forEach((document) => {
-            if(document.data().isWork === true){
-                const note = document.data().noteDescription;
-                workNotesArray.push(note);
+    db.collection("notes").get().then((documents) => {
+        documents.forEach((document) => {
+            if (document.data().isWork === true) {
+
+                const noteObject = {
+                    noteId: document.data().id,
+                    noteDescription: document.data().noteDescription
+                }
+
+                workNotesArray.push(noteObject);
             }
         });
-        
+
         res.render("list", { listTitle: "Work List", elements: workNotesArray });
     });
-    
+
 });
 
 app.post("/", function (req, res) {
@@ -68,17 +78,21 @@ app.post("/", function (req, res) {
 
     if (req.body.list === "Work List") {
 
-        db.collection("notes").add({
+        const newItem = db.collection("notes").doc();
+        newItem.set({
+            id: newItem.id,
             noteDescription,
-            isWork : true
+            isWork: true
         });
 
         res.redirect("/work");
     } else {
 
-
-        db.collection("notes").add({
-            noteDescription
+        const newItem = db.collection("notes").doc();
+        newItem.set({
+            id: newItem.id,
+            noteDescription,
+            isWork: false
         });
 
         res.redirect("/");
@@ -120,3 +134,7 @@ app.get("/notes", (req, res) => {
 app.listen(3000, function () {
     console.log("Server started on port 3000");
 });
+
+function deleteItems(){
+    console.log("borrando");
+}

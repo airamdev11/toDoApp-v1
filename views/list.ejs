@@ -1,24 +1,43 @@
-
-<%- include("header") -%> 
-    <div class="box" id ="heading">
-        <h1> <%= listTitle %>  </h1>
+<%- include("header") -%>
+    <div class="box" id="heading">
+        <h1>
+            <%= listTitle %>
+        </h1>
     </div>
 
-    
+
     <div class="box">
-        
-            <% for (let i = 0; i<elements.length;i++){ %> 
-                <div class="item">
-                    <input type="checkbox" >
-                    <p><%= elements[i] %></p>
-                </div>
-            <% } %> 
 
-            <form action="/" method="post" class="item">
-                <input type="text" name="element" required placeholder="New Item" autocomplete="off">
-                <button id="submitItemButton" type="submit" name="list" value="<%= listTitle %>">+</button>
-            </form>
+        <% for (let i=0; i<elements.length;i++){ %>
+            <div class="item">
+                <input type="checkbox">
+                <p>
+                    <%= elements[i].noteDescription %>
+                </p>
+                <label for="" hidden><%= elements[i].noteId %></label>
+            </div>
+            <% } %>
 
+                <form action="/" method="post" class="item">
+                    <input type="text" name="element" required placeholder="New Item" autocomplete="off">
+                    <button id="submitItemButton" type="submit" name="list" value="<%= listTitle %>">+</button>
+                </form>
 
+                
+                        
     </div>
-<%- include("footer") -%> 
+
+    <div class="">
+        <% if(listTitle==="Work List" ){%>
+            <form action="/" method="get" class="actionButton">
+                <button  type="submit" name="" value="" class="actionButton">Go to Home</button>
+                
+            </form>
+        <% }else{%>
+            <form action="/work" method="get" >
+                <button  type="submit" name="" value="" class="actionButton">Go to Work List</button>
+            </form>
+        <% } %>
+    </div>
+
+    <%- include("footer") -%>
